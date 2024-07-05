@@ -1,20 +1,44 @@
-from treelib import Tree
+import treelib
 
-tree = Tree()
+# Create a new tree
+tree = treelib.Tree()
 
-root = tree.create_node('root')
-a01 = tree.create_node('A01', parent=root)
-a11 = tree.create_node('A11', parent=a01)
-b01 = tree.create_node('B01', parent=root)
-b11 = tree.create_node('B11', parent=b01)
-b12 = tree.create_node('B12', parent=b01)
-b121= tree.create_node('B121', parent=b12)
-b122= tree.create_node('B122', parent=b12)
-c01 = tree.create_node('C01', parent=root)
-c11 = tree.create_node('C11', parent=c01)
-c12 = tree.create_node('C12', parent=c01)
-c13 = tree.create_node('C13', parent=c01)
+# Adding the root node
+tree.create_node("積極的なコミュニケーション", "root")
 
-print(tree.show(stdout=False))
-print(tree.to_json())
-tree.to_graphviz('tree.dot')
+# Adding child nodes under the root
+tree.create_node("声を掛け合う", "voice_node", parent="root")
+tree.create_node("教えあう", "teach_node", parent="root")
+tree.create_node("相談する", "consult_node", parent="root")
+
+# Adding leaf nodes under "声を掛け合う"
+tree.create_node("同僚と話す", "talk_to_colleague", parent="voice_node")
+tree.create_node("挨拶をする", "greet", parent="voice_node")
+tree.create_node("気づいたことを伝える", "inform", parent="voice_node")
+
+# Adding leaf nodes under "教えあう"
+tree.create_node("他のBOがわからないときは教える", "teach_bo", parent="teach_node")
+tree.create_node(
+    "他部署のオペレータに自分の部署と連動している数値の情報を伝える",
+    "inform_other_dept",
+    parent="teach_node",
+)
+
+# Adding leaf nodes under "相談する"
+tree.create_node(
+    "わからないことがあったらASと話す", "consult_as", parent="consult_node"
+)
+tree.create_node(
+    "タンクを停止しそうになった時にASに相談する", "consult_tank", parent="consult_node"
+)
+
+# Displaying the tree structure
+# tree.show()
+
+# save as dot file
+# save_path = "tree.dot"
+# tree.to_graphviz(save_path)
+
+tree_json = tree.to_json()
+with open("tree.json", "w") as f:
+    f.write(tree_json)
